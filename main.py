@@ -24,17 +24,30 @@ def main():
     # Setup opencv video capture
     vc = cv2.VideoCapture(CAMERA_INPUT)
     time.sleep(2)
+
+    flask_output = ""
+
     if (vc.isOpened() == False):
         print("Error opening video file or stream")
         return False
 
     while(True):
+        # Grab new frame
         rval, frame = vc.read()
+
+        with open('out.txt', 'w') as f:
+            f.write(flask_output)
+
+        # Reset flask string
+        flask_output = ""
+
+
+        # Open CSV file for vehicle locations
         with open('csv/' + '1.csv', 'r') as np:
             readerOfCSVData = csv.reader(np, delimiter=',')
+
+            # Interate through car locations
             for row in readerOfCSVData:
-                print(row)
-                numberOfParkingSpots = int(row[0])
 
                 # Crop
                 new_frame = frame[int(row[1]):int(row[2]), int(row[3]):int(row[4])]
@@ -64,7 +77,11 @@ def main():
 
                         #Debug print
                         resultList = results.tolist()
-                        print(str(row[0]) + ' Car Prediction: ' + str(resultList[0][0]))
+
+                        # Save outut to file
+                        output = str(row[0]) + ' Car Prediction: ' + str(resultList[0][0])
+                        print(output)
+                        flask_output += output + '\n'
                     except RuntimeError:
                         print("[INFO] caught a RuntimeError")
 
