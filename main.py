@@ -35,19 +35,14 @@ def main():
             for row in readerOfCSVData:
                 print(row)
                 numberOfParkingSpots = int(row[0])
-                # TESTING Rectangle
-                #cv2.rectangle(frame,(int(row[1]),int(row[2])),(int(row[3]),int(row[4])),(0,255,0),3)
 
-                # Crop testing
-                frame = frame[int(row[1]):int(row[2]), int(row[3]):int(row[4])]
-                # Display
-                cv2.imshow("frame", frame)
+                # Crop
+                new_frame = frame[int(row[1]):int(row[2]), int(row[3]):int(row[4])]
+
+                # For testing... Display
+                cv2.imshow("frame" + str(row[0]), new_frame)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
-        ## TESTING Rectangle
-        #cv2.imshow("frame", frame)
-        #if cv2.waitKey(1) & 0xFF == ord('q'):
-        #    break
 
 def load_graph(model_file):
         graph = tf.Graph()
