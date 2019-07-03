@@ -44,6 +44,30 @@ def main():
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
+                # Start TF session
+                with tf.Session(graph=graph) as sess:
+                    try:
+                        cropped_image1 = cv2.resize(new_frame, (224, 224))
+                        one_dimension = cropped_image1.reshape(1,
+                                        cropped_image1.shape[0],
+                                        cropped_image1.shape[1],
+                                        cropped_image1.shape[2])
+                        #Start Tensorflow Session
+                        with sess.as_default():
+                        	tensor = tf.constant(one_dimension)
+
+                        resized = tf.image.resize_bilinear(tensor, [input_height, input_width])
+                        normalized = tf.divide(tf.subtract(resized, [input_mean]), [input_std])
+                        with sess.as_default():
+                        	result = sess.run(normalized)
+                        results = sess.run(output_operation.outputs[0],{input_operation.outputs[0]: result})
+
+                        #Debug print
+                        resultList = results.tolist()
+                        print(str(row[0]) + ' Car Prediction: ' + str(resultList[0][0]))
+                    except RuntimeError:
+                        print("[INFO] caught a RuntimeError")
+
 def load_graph(model_file):
         graph = tf.Graph()
         graph_def = tf.GraphDef()
