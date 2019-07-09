@@ -2,7 +2,7 @@
 This is a refactored version of my senior design project from ohio northern university.
 
 It uses an already trained neural net (located in tf_files), and opencv to detect cars and
-display results once the image is run throught the neural network. 
+display results once the image is run through the neural network.
 
 This version also displays these results using a simple flask server.
 
