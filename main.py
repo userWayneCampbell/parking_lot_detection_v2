@@ -103,24 +103,5 @@ def load_labels(label_file):
                 label.append(l.rstrip())
         return label
 
-#Crops image
-def crop_image(this_image, r0,r1,r2,r3):
-        if r0 > r2:
-                x1 = r2
-                x2 = r0
-        else:
-                x1 = r0
-                x2 = r2
-        if r1 > r3:
-                y1 = r3
-                y2 = r1
-        else:
-                y1 = r1
-                y2 = r3
-        #print("opencv display values: " + y1 + " " + y2 + " " + x1 + " " + x2)
-        crop_img = this_image[int(y1) : int(y2),int(x1) : int(x2)]
-        #cv2.imshow("name", crop_img)
-        return crop_img
-
 if __name__ == "__main__":
     main()
